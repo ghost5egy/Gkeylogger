@@ -2,11 +2,11 @@ from smtplib import SMTP
 import email.message
 
 
-def sendmailg(gserver , gport ,guser, gpass , mailfrom , mailto , msg , ishtml = 0):
+def sendmailg(gserver , gport ,guser, gpass , mailfrom , mailto , subject , msg , ishtml = 0):
     mailmsg = email.message.Message()
     mailmsg['From'] = mailfrom
     mailmsg['To'] = mailto
-    mailmsg['Subject'] = 'Report'
+    mailmsg['Subject'] = subject
 
     if ishtml == 1:
         mailmsg.add_header('Content-Type','text/html')
@@ -17,7 +17,6 @@ def sendmailg(gserver , gport ,guser, gpass , mailfrom , mailto , msg , ishtml =
     with SMTP(gserver , gport)  as smtp:
         smtp.ehlo()
         smtp.starttls()
-        smtp.login(guser, gpass)  
-        smtp.set_debuglevel(1)
+        smtp.login(guser, gpass)
         smtp.sendmail(mailfrom, mailto,mailmsg.as_string())
         smtp.quit()
