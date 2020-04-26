@@ -36,6 +36,9 @@ def main(argv):
 			break
 	if sendtype == 1:
 		iconfile = input('\t{0}Enter Icon path (must be an .ico file) : {1}'.format(B,B))
+		if iconfile == "":
+			print("You Enter Nothing then no icon will be added to exe")
+			iconfile = "NONE"
 		gserver = input('\t{0}Enter The Smtp Server : {1}'.format(B,B))
 		gport = int(input('\t{0}Enter The Smtp port : {1}'.format(B,B)))
 		guser = input('\t{0}Enter The Smtp User : {1}'.format(B,B))
