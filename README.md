@@ -9,6 +9,6 @@ To Use it :
   	git clone https://github.com/ghost5egy/Gkeylogger.git
 	cd Gkeylogger
 	sudo chmod +x install.sh
-	./install.sh
-	python3 Gkeylogger.py
+	sudo ./install.sh
+	sudo python3 Gkeylogger.py
 
