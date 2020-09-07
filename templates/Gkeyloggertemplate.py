@@ -1,3 +1,4 @@
+import pywintypes
 import win32gui as wg
 import win32console as wc
 import pynput.keyboard
