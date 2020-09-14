@@ -1,6 +1,7 @@
 sudo apt update
 sudo apt upgrade -y
 sudo apt install python
+sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine32
 sudo apt install wine32 -y
 rm -r -f ~/.wine
 WINEARCH=win32 WINEPREFIX=~/.wine wine wineboot
