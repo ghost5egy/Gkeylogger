@@ -12,3 +12,5 @@ wget https://github.com/mhammond/pywin32/releases/download/b227/pywin32-227.win3
 sudo wine pywin32-227.win32-py3.8.exe
 sudo wine ~/.wine/drive_c/users/root/Local\ Settings/Application\ Data/Programs/Python/Python38-32/python.exe -m pip install pynput==1.6.8
 sudo wine ~/.wine/drive_c/users/root/Local\ Settings/Application\ Data/Programs/Python/Python38-32/python.exe -m pip install pyinstaller
+sudo wine ~/.wine/drive_c/users/root/Local\ Settings/Application\ Data/Programs/Python/Python38-32/python.exe -m pip install pefile
+
